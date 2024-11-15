@@ -81,8 +81,10 @@ def test_with_duplicates():
     s = SortedFrozenSet([5, 5, 5])
     assert len(s) == 1
 
+
 def test_sized_protocol():
     assert issubclass(SortedFrozenSet, Sized)
+
 
 # iterable protocol
 # '__iter__' - return iterator object
@@ -109,6 +111,7 @@ def test_for_loop(sfs):
 
     for index, item in enumerate(sfs):
         assert item == expected[index]
+
 
 def test_iterable_protocol():
     assert issubclass(SortedFrozenSet, Iterable)
@@ -236,6 +239,10 @@ def test_equal_sets_have_the_same():
     assert hash(SortedFrozenSet([5, 2, 1, 4])) == hash(SortedFrozenSet([5, 2, 1, 4]))
 
 
+def test_hasable_protocol():
+    assert issubclass(SortedFrozenSet, Hashable)
+
+
 # Reversed
 # '__reversed__'
 # Fallback '__getitem__' + '__len__'
@@ -275,3 +282,83 @@ def test_count_zero():
 def test_count_one():
     s = SortedFrozenSet([1, 5, 8, 9])
     assert s.count(8) == 1
+
+
+# Set
+# relational infix operator
+
+def test_lt_positive():
+    s = SortedFrozenSet({1, 2})
+    t = SortedFrozenSet({1, 2, 3})
+    assert s < t
+
+
+def test_lt_negative():
+    s = SortedFrozenSet({1, 2, 3})
+    t = SortedFrozenSet({1, 2, 3})
+    assert not (s < t)
+
+
+def test_le_lt_positive():
+    s = SortedFrozenSet({1, 2})
+    t = SortedFrozenSet({1, 2, 3})
+    assert s <= t
+
+
+def test_le_eq_positive():
+    s = SortedFrozenSet({1, 2, 3})
+    t = SortedFrozenSet({1, 2, 3})
+    assert s <= t
+
+
+def test_le_negative():
+    s = SortedFrozenSet({1, 2, 3})
+    t = SortedFrozenSet({1, 2})
+    assert not (s <= t)
+
+
+def test_gt_positive():
+    s = SortedFrozenSet({1, 2, 3})
+    t = SortedFrozenSet({1, 2})
+    assert s > t
+
+
+def test_gt_negative():
+    s = SortedFrozenSet({1, 2, 3})
+    t = SortedFrozenSet({1, 2, 3})
+    assert not (s > t)
+
+
+def test_ge_gt_positive():
+    s = SortedFrozenSet({1, 2, 3})
+    t = SortedFrozenSet({1, 2})
+    assert s >= t
+
+
+def test_ge_eq_positive():
+    s = SortedFrozenSet({1, 2, 3})
+    t = SortedFrozenSet({1, 2, 3})
+    assert s >= t
+
+
+def test_ge_negative():
+    s = SortedFrozenSet({1, 2})
+    t = SortedFrozenSet({1, 2, 3})
+    assert not (s >= t)
+
+
+
+# relational methods
+
+def test_issubset_proper_positive():
+    s = SortedFrozenSet({1,2})
+    t = [1,2,3]
+    assert s.issubset(t)
+
+
+def test_issubset_positive():
+    s = SortedFrozenSet({1,2,3})
+    t = [1,2,3]
+    assert s.issubset(t)
+
+
